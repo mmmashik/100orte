@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Germany Travel Bucket List</title>
+    <style>
+        :root {
+            --bg-color: #1e2b43; /* Dark Blue from poster */
+            --card-color: #f2e2b3; /* Beige/Gold from poster */
+            --card-hover: #fff0c0;
+            --text-color: #1a1a1a;
+            --border-color: #d4c494;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: "Georgia", "Times New Roman", serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            color: var(--card-color);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            border-bottom: 1px solid var(--card-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            /* Creates a responsive grid that tries to fit columns automatically */
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            color: var(--text-color);
+            text-decoration: none;
+            aspect-ratio: 3/4; /* Vertical rectangle shape like the scratch-off squares */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover effect to simulate "active" or "scratching" interest */
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background-color: var(--card-hover);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border-color: #fff;
+            z-index: 2;
+        }
+
+        .place-name {
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .location-name {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #444;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Add a subtle texture/grain if desired, but keeping it clean for now */
+        
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
+                gap: 8px;
+            }
+            .card {
+                padding: 5px;
+            }
+            .place-name {
+                font-size: 0.65rem;
+            }
+            .location-name {
+                font-size: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+             .grid-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Die 30 Sehen Musst (30 Places You Must See)</h1>
+    </header>
+
+    <div class="grid-container">
+        <!-- ROW 1 -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Vitra+Design+Museum+Weil+am+Rhein" target="_blank" class="card">
+            <div class="place-name">Vitra Design Museum</div>
+            <div class="location-name">Weil am Rhein</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Insel+Mainau+Bodensee" target="_blank" class="card">
+            <div class="place-name">Insel Mainau</div>
+            <div class="location-name">Bodensee</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Berchtesgaden+Oberbayern" target="_blank" class="card">
+            <div class="place-name">Berchtesgaden</div>
+            <div class="location-name">Oberbayern</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Neuer+Leuchtturm+Lindau" target="_blank" class="card">
+            <div class="place-name">Neuer Leuchtturm</div>
+            <div class="location-name">Lindau</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Basteibrücke+Sächsische+Schweiz" target="_blank" class="card">
+            <div class="place-name">Basteibrücke</div>
+            <div class="location-name">Sächsische Schweiz</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Nymphenburg+München" target="_blank" class="card">
+            <div class="place-name">Schloss Nymphenburg</div>
+            <div class="location-name">München</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Bamberg+Bayern" target="_blank" class="card">
+            <div class="place-name">Bamberg</div>
+            <div class="location-name">Bayern</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Drachenburg+Königswinter" target="_blank" class="card">
+            <div class="place-name">Schloss Drachenburg</div>
+            <div class="location-name">Königswinter</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Alte+Brücke+Heidelberg" target="_blank" class="card">
+            <div class="place-name">Alte Brücke</div>
+            <div class="location-name">Heidelberg</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Nationalpark+Bayerischer+Wald" target="_blank" class="card">
+            <div class="place-name">NP Bayerischer Wald</div>
+            <div class="location-name">Landkreis Regen</div>
+        </a>
+
+        <!-- ROW 2 -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Schachen+Bayern" target="_blank" class="card">
+            <div class="place-name">Schachen</div>
+            <div class="location-name">Bayern</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Hintersee+Ramsau+bei+Berchtesgaden" target="_blank" class="card">
+            <div class="place-name">Hintersee</div>
+            <div class="location-name">Ramsau bei Berchtesgaden</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Kölner+Dom+Köln" target="_blank" class="card">
+            <div class="place-name">Kölner Dom</div>
+            <div class="location-name">Köln</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Kirschblütenstraße+Heerstraße+Bonn" target="_blank" class="card">
+            <div class="place-name">Kirschblütenstraße</div>
+            <div class="location-name">Bonn</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Reichstag+Berlin" target="_blank" class="card">
+            <div class="place-name">Reichstag</div>
+            <div class="location-name">Berlin</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Garmisch-Partenkirchen" target="_blank" class="card">
+            <div class="place-name">Garmisch- Partenkirchen</div>
+            <div class="location-name">Oberbayern</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Schwarzwald" target="_blank" class="card">
+            <div class="place-name">Schwarzwald</div>
+            <div class="location-name">Baden- Württemberg</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Alatsee+Ostallgäu" target="_blank" class="card">
+            <div class="place-name">Alatsee</div>
+            <div class="location-name">Ostallgäu</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Baden-Baden" target="_blank" class="card">
+            <div class="place-name">Baden-Baden</div>
+            <div class="location-name">Baden- Württemberg</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Zeche+Zollern+Dortmund" target="_blank" class="card">
+            <div class="place-name">Zeche Zollern</div>
+            <div class="location-name">Dortmund</div>
+        </a>
+
+        <!-- ROW 3 -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Meißen+Sachsen" target="_blank" class="card">
+            <div class="place-name">Meißen</div>
+            <div class="location-name">Sachsen</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Museum+Ludwig+Köln" target="_blank" class="card">
+            <div class="place-name">Museum Ludwig</div>
+            <div class="location-name">Köln</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Bernkastel-Kues" target="_blank" class="card">
+            <div class="place-name">Bernkastel-Kues</div>
+            <div class="location-name">Rheinland- Pfalz</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Naturpark+Barnim" target="_blank" class="card">
+            <div class="place-name">Naturpark Barnim</div>
+            <div class="location-name">Brandenburg</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Erfurt+Thüringen" target="_blank" class="card">
+            <div class="place-name">Erfurt</div>
+            <div class="location-name">Thüringen</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Ammergauer+Alpen" target="_blank" class="card">
+            <div class="place-name">Ammergauer Alpen</div>
+            <div class="location-name">Nördlichen Kalkalpen</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Nationalpark+Jasmund+Rügen" target="_blank" class="card">
+            <div class="place-name">NP Jasmund</div>
+            <div class="location-name">Rügen</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Böttcherstraße+Bremen" target="_blank" class="card">
+            <div class="place-name">Böttcherstraße</div>
+            <div class="location-name">Bremen</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Rakotzbrücke+Gablenz" target="_blank" class="card">
+            <div class="place-name">Rakotzbrücke</div>
+            <div class="location-name">Gablenz</div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=Ramsau+bei+Berchtesgaden" target="_blank" class="card">
+        <div class="place-name">Ramsau bei Berchtesgaden</div>
+        <div class="location-name">Bayern</div>
+    </a>
+
+    <!-- ROW 4 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Mainzer+Dom+Mainz" target="_blank" class="card">
+        <div class="place-name">Mainzer Dom</div>
+        <div class="location-name">Mainz</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Schrecksee+Allgäuer+Alpen" target="_blank" class="card">
+        <div class="place-name">Schrecksee</div>
+        <div class="location-name">Allgäuer Alpen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Rothenburg+ob+der+Tauber" target="_blank" class="card">
+        <div class="place-name">Rothenburg ob der Tauber</div>
+        <div class="location-name">Bayern</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Die+Barbarine+Sächsische+Schweiz" target="_blank" class="card">
+        <div class="place-name">Die Barbarine</div>
+        <div class="location-name">Sächsische Schweiz</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Städel+Museum+Frankfurt" target="_blank" class="card">
+        <div class="place-name">Städel Museum</div>
+        <div class="location-name">Frankfurt</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Lilienstein+Sächsische+Schweiz" target="_blank" class="card">
+        <div class="place-name">Lilienstein</div>
+        <div class="location-name">Sächsische Schweiz</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Tübingen+Baden-Württemberg" target="_blank" class="card">
+        <div class="place-name">Tübingen</div>
+        <div class="location-name">Baden- Württemberg</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Heidelberg" target="_blank" class="card">
+        <div class="place-name">Schloss Heidelberg</div>
+        <div class="location-name">Heidelberg</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Ostseebad+Sellin+Rügen" target="_blank" class="card">
+        <div class="place-name">Ostseebad Sellin</div>
+        <div class="location-name">Insel Rügen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Festung+Königstein" target="_blank" class="card">
+        <div class="place-name">Festung Königstein</div>
+        <div class="location-name">Königstein</div>
+    </a>
+
+    <!-- ROW 5 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Kunstkraftwerk+Leipzig" target="_blank" class="card">
+        <div class="place-name">Kunstkraftwerk</div>
+        <div class="location-name">Leipzig</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Freudenberg+Nordrhein-Westfalen" target="_blank" class="card">
+        <div class="place-name">Freudenberg</div>
+        <div class="location-name">Nordrhein- Westfalen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Berliner+Mauer+Berlin" target="_blank" class="card">
+        <div class="place-name">Berliner Mauer</div>
+        <div class="location-name">Berlin</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Oberammergau+Bayern" target="_blank" class="card">
+        <div class="place-name">Oberammergau</div>
+        <div class="location-name">Bayern</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Eisenach+Wartburg" target="_blank" class="card">
+        <div class="place-name">Eisenach</div>
+        <div class="location-name">Wartburg</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Naturpark+Arnsberger+Wald" target="_blank" class="card">
+        <div class="place-name">Naturpark Arnsberger Wald</div>
+        <div class="location-name">Nordrhein- Westfalen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Helgoland+Schleswig-Holstein" target="_blank" class="card">
+        <div class="place-name">Helgoland</div>
+        <div class="location-name">Schleswig- Holstein</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Brodtener+Steilufer+Lübeck" target="_blank" class="card">
+        <div class="place-name">Brodtener Steilküste</div>
+        <div class="location-name">Lübeck</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Eibsee+Bayern" target="_blank" class="card">
+        <div class="place-name">Eibsee</div>
+        <div class="location-name">Berchtesgadener Alpen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Miniatur+Wunderland+Hamburg" target="_blank" class="card">
+        <div class="place-name">Miniatur Wunderland</div>
+        <div class="location-name">Hamburg</div>
+    </a>
+
+    <!-- ROW 6 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Partnachklamm+Garmisch-Partenkirchen" target="_blank" class="card">
+        <div class="place-name">Partnachklamm</div>
+        <div class="location-name">Garmisch- Partenkirchen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Alexanderplatz+Berlin" target="_blank" class="card">
+        <div class="place-name">Alexanderplatz</div>
+        <div class="location-name">Berlin</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Wismar+Mecklenburg-Vorpommern" target="_blank" class="card">
+        <div class="place-name">Wismar</div>
+        <div class="location-name">Mecklenburg- Vorpommern</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Sanssouci+Potsdam" target="_blank" class="card">
+        <div class="place-name">Sanssouci</div>
+        <div class="location-name">Potsdam</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Linderhof+Ettal" target="_blank" class="card">
+        <div class="place-name">Schloss Linderhof</div>
+        <div class="location-name">Ettal</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Marienburg+Pattensen" target="_blank" class="card">
+        <div class="place-name">Schloss Marienburg</div>
+        <div class="location-name">Pattensen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Mercedes-Benz+Welt+Stuttgart" target="_blank" class="card">
+        <div class="place-name">Mercedes-Benz Welt</div>
+        <div class="location-name">Stuttgart</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Prinzipalmarkt+Münster" target="_blank" class="card">
+        <div class="place-name">Prinzipalmarkt</div>
+        <div class="location-name">Münster</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Röthbachfall+Berchtesgadener+Alpen" target="_blank" class="card">
+        <div class="place-name">Röthbachfall</div>
+        <div class="location-name">Berchtesgadener Alpen</div>
+    </a>
+
+    <a href="https://www.google.com/maps/search/?api=1&query=Deutsches+Eck+Koblenz" target="_blank" class="card">
+        <div class="place-name">Deutsches Eck</div>
+        <div class="location-name">Koblenz</div>
+    </a>
+
+    <!-- ROW 7 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Porta+Nigra+Trier" target="_blank" class="card">
+        <div class="place-name">Porta Nigra</div>
+        <div class="location-name">Trier</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Pirna+Sachsen" target="_blank" class="card">
+        <div class="place-name">Pirna</div>
+        <div class="location-name">Sachsen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Moritzburg" target="_blank" class="card">
+        <div class="place-name">Schloss Moritzburg</div>
+        <div class="location-name">Moritzburg</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Neuschwanstein+Schwangau" target="_blank" class="card">
+        <div class="place-name">Schloss Neuschwanstein</div>
+        <div class="location-name">Schwangau</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Insel+Sylt" target="_blank" class="card">
+        <div class="place-name">Insel Sylt</div>
+        <div class="location-name">Schleswig- Holstein</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=BMW+Welt+München" target="_blank" class="card">
+        <div class="place-name">BMW Welt</div>
+        <div class="location-name">München</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Schloss+Schwerin" target="_blank" class="card">
+        <div class="place-name">Schloss Schwerin</div>
+        <div class="location-name">Schwerin</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Struffeltroute+Roetgen" target="_blank" class="card">
+        <div class="place-name">Struffeltroute</div>
+        <div class="location-name">Roetgen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Freiburg+im+Breisgau" target="_blank" class="card">
+        <div class="place-name">Freiburg im Breisgau</div>
+        <div class="location-name">Baden- Württemberg</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Porsche-Museum+Stuttgart" target="_blank" class="card">
+        <div class="place-name">Porsche-Museum</div>
+        <div class="location-name">Stuttgart</div>
+    </a>
+
+    <!-- ROW 8 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Insel+Hiddensee" target="_blank" class="card">
+        <div class="place-name">Insel Hiddensee</div>
+        <div class="location-name">West-Rügen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Blautopf+Blaubeuren" target="_blank" class="card">
+        <div class="place-name">Blautopf</div>
+        <div class="location-name">Blaubeuren</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Triberger+Wasserfälle" target="_blank" class="card">
+        <div class="place-name">Triberger Wasserfälle</div>
+        <div class="location-name">Mittlerer Schwarzwald</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Dinkelsbühl+Bayern" target="_blank" class="card">
+        <div class="place-name">Dinkelsbühl</div>
+        <div class="location-name">Bayern</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Insel+Fehmarn" target="_blank" class="card">
+        <div class="place-name">Insel Fehmarn</div>
+        <div class="location-name">Schleswig- Holstein</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Loreley+Bornich" target="_blank" class="card">
+        <div class="place-name">Loreley</div>
+        <div class="location-name">Bornich</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Tangermünde" target="_blank" class="card">
+        <div class="place-name">Tangermünde</div>
+        <div class="location-name">Sachsen- Anhalt</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Ladenburg+Baden-Württemberg" target="_blank" class="card">
+        <div class="place-name">Ladenburg</div>
+        <div class="location-name">Baden- Württemberg</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Burg+Eltz+Wierschem" target="_blank" class="card">
+        <div class="place-name">Burg Eltz</div>
+        <div class="location-name">Wierschem</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Markgräfliches+Opernhaus+Bayreuth" target="_blank" class="card">
+        <div class="place-name">Markgräfliches Opernhaus</div>
+        <div class="location-name">Bayreuth</div>
+    </a>
+
+    <!-- ROW 9 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Forggensee+Füssen" target="_blank" class="card">
+        <div class="place-name">Forggensee</div>
+        <div class="location-name">Füssen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Externsteine+Teutoburger+Wald" target="_blank" class="card">
+        <div class="place-name">Externsteine</div>
+        <div class="location-name">Teutoburger Wald</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Insel+Juist" target="_blank" class="card">
+        <div class="place-name">Insel Juist</div>
+        <div class="location-name">Niedersachsen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Zentralgebäude+Lüneburg" target="_blank" class="card">
+        <div class="place-name">Zentralgebäude</div>
+        <div class="location-name">Lüneburg</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Quedlinburg" target="_blank" class="card">
+        <div class="place-name">Quedlinburg</div>
+        <div class="location-name">Sachsen- Anhalt</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Bauhaus+Dessau" target="_blank" class="card">
+        <div class="place-name">Bauhaus Dessau</div>
+        <div class="location-name">Dessau- Rosslau</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Zugspitze+Bayerische+Alpen" target="_blank" class="card">
+        <div class="place-name">Zugspitze</div>
+        <div class="location-name">Bayerische Alpen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Insel+Amrum" target="_blank" class="card">
+        <div class="place-name">Insel Amrum</div>
+        <div class="location-name">Schleswig- Holstein</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Mühlenmuseum+Gifhorn" target="_blank" class="card">
+        <div class="place-name">Mühlenmuseum</div>
+        <div class="location-name">Gifhorn</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=KZ+Dachau" target="_blank" class="card">
+        <div class="place-name">KZ Dachau</div>
+        <div class="location-name">Dachau</div>
+    </a>
+
+    <!-- ROW 10 -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Botanischer+Garten+München" target="_blank" class="card">
+        <div class="place-name">Botanischer Garten</div>
+        <div class="location-name">München</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Naturpark+Müritz" target="_blank" class="card">
+        <div class="place-name">Naturpark Müritz</div>
+        <div class="location-name">Müritz</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Kaiser+Wilhelm+Gedächtniskirche+Berlin" target="_blank" class="card">
+        <div class="place-name">Kaiser Wilhelm Gedächtniskirche</div>
+        <div class="location-name">Berlin</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Luisenpark+Mannheim" target="_blank" class="card">
+        <div class="place-name">Luisenpark</div>
+        <div class="location-name">Mannheim</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Museum+Vogtsbauernhof+Gutach" target="_blank" class="card">
+        <div class="place-name">Museum Vogtsbauernhof</div>
+        <div class="location-name">Gutach</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Westmole+Warnemünde" target="_blank" class="card">
+        <div class="place-name">Westmole</div>
+        <div class="location-name">Warnemünde</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Wünsdorf+Zossen" target="_blank" class="card">
+        <div class="place-name">Wünsdorf</div>
+        <div class="location-name">Zossen</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Fürstengarten+Marienberg+Würzburg" target="_blank" class="card">
+        <div class="place-name">Fürstengarten Marienberg</div>
+        <div class="location-name">Würzburg</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Zauberwald+Hintersee" target="_blank" class="card">
+        <div class="place-name">Zauberwald</div>
+        <div class="location-name">Hintersee</div>
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Wuppertal+Schwebebahn" target="_blank" class="card">
+        <div class="place-name">Wuppertal Schwebebahn</div>
+        <div class="location-name">Wuppertal</div>
+    </a>
+    </div>
+</div>
+
+</body>
+</html>
