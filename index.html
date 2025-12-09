@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Germany Travel Bucket List</title>
+    
+    <!-- Leaflet CSS for the Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
     <style>
         :root {
             --bg-color: #1e2b43; /* Dark Blue from poster */
@@ -42,21 +48,45 @@
             border-bottom: 1px solid var(--card-color);
             display: inline-block;
             padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
+        /* Toggle Button Style */
+        .toggle-btn {
+            display: block;
+            margin: 0 auto;
+            background-color: var(--card-color);
+            color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            padding: 10px 25px;
+            font-family: "Georgia", serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--card-hover);
+            transform: scale(1.05);
+        }
+
+        /* Grid View Styles */
         .grid-container {
             display: grid;
-            /* Creates a responsive grid that tries to fit columns automatically */
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 15px;
             width: 100%;
+            transition: opacity 0.3s ease;
         }
 
         .card {
             background-color: var(--card-color);
             color: var(--text-color);
             text-decoration: none;
-            aspect-ratio: 3/4; /* Vertical rectangle shape like the scratch-off squares */
+            aspect-ratio: 3/4;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -71,7 +101,6 @@
             overflow: hidden;
         }
 
-        /* Hover effect to simulate "active" or "scratching" interest */
         .card:hover {
             transform: translateY(-5px) scale(1.02);
             background-color: var(--card-hover);
@@ -97,28 +126,47 @@
             letter-spacing: 0.5px;
         }
 
-        /* Add a subtle texture/grain if desired, but keeping it clean for now */
-        
+        /* Map View Styles */
+        #map-view {
+            display: none; /* Hidden by default */
+            height: 75vh;
+            width: 100%;
+            border: 4px solid var(--card-color);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Leaflet Popup Customization */
+        .leaflet-popup-content-wrapper {
+            background-color: var(--card-color);
+            border-radius: 4px;
+            border: 1px solid #d4c494;
+        }
+        .leaflet-popup-tip { background-color: var(--card-color); }
+        .popup-title { font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .popup-link { 
+            display: inline-block; 
+            background-color: var(--bg-color); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 5px 10px; 
+            font-size: 0.7rem; 
+            border-radius: 3px; 
+            margin-top: 5px;
+        }
+
         @media (max-width: 600px) {
             .grid-container {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
+                grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
-            .card {
-                padding: 5px;
-            }
-            .place-name {
-                font-size: 0.65rem;
-            }
-            .location-name {
-                font-size: 0.5rem;
-            }
+            .card { padding: 5px; }
+            .place-name { font-size: 0.65rem; }
+            .location-name { font-size: 0.5rem; }
         }
         
         @media (max-width: 400px) {
-             .grid-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on very small screens */
-            }
+             .grid-container { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -126,10 +174,12 @@
 
 <div class="container">
     <header>
-        <h1>Die 30 Sehen Musst (30 Places You Must See)</h1>
+        <h1>Die 100 Sehen Musst (100 Places)</h1>
+        <button id="viewToggle" class="toggle-btn" onclick="toggleView()">Switch to Map View</button>
     </header>
 
-    <div class="grid-container">
+    <!-- LIST VIEW -->
+    <div id="listView" class="grid-container">
         <!-- ROW 1 -->
         <a href="https://www.google.com/maps/search/?api=1&query=Vitra+Design+Museum+Weil+am+Rhein" target="_blank" class="card">
             <div class="place-name">Vitra Design Museum</div>
@@ -604,7 +654,177 @@
         <div class="location-name">Wuppertal</div>
     </a>
     </div>
+
+    <!-- MAP VIEW CONTAINER -->
+    <div id="map-view"></div>
 </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<script>
+    let mapInitialized = false;
+    let map;
+
+    const places = [
+        // --- Poster 1 (1-30) ---
+        { name: "Vitra Design Museum", location: "Weil am Rhein", lat: 47.6015, lng: 7.6189 },
+        { name: "Insel Mainau", location: "Bodensee", lat: 47.7056, lng: 9.1953 },
+        { name: "Berchtesgaden", location: "Oberbayern", lat: 47.6306, lng: 13.0016 },
+        { name: "Neuer Leuchtturm", location: "Lindau", lat: 47.5446, lng: 9.6833 },
+        { name: "Basteibrücke", location: "Sächsische Schweiz", lat: 50.9619, lng: 14.0727 },
+        { name: "Schloss Nymphenburg", location: "München", lat: 48.1582, lng: 11.5036 },
+        { name: "Bamberg", location: "Bayern", lat: 49.8988, lng: 10.9028 },
+        { name: "Schloss Drachenburg", location: "Königswinter", lat: 50.6669, lng: 7.2066 },
+        { name: "Alte Brücke", location: "Heidelberg", lat: 49.4137, lng: 8.7095 },
+        { name: "NP Bayerischer Wald", location: "Landkreis Regen", lat: 48.9667, lng: 13.4167 },
+        { name: "Schachen", location: "Bayern", lat: 47.4186, lng: 11.1114 },
+        { name: "Hintersee", location: "Ramsau bei Berchtesgaden", lat: 47.6069, lng: 12.8550 },
+        { name: "Kölner Dom", location: "Köln", lat: 50.9413, lng: 6.9583 },
+        { name: "Kirschblütenstraße", location: "Bonn", lat: 50.7383, lng: 7.0944 },
+        { name: "Reichstag", location: "Berlin", lat: 52.5186, lng: 13.3762 },
+        { name: "Garmisch-Partenkirchen", location: "Oberbayern", lat: 47.4917, lng: 11.0955 },
+        { name: "Schwarzwald", location: "Baden-Württemberg", lat: 48.1303, lng: 8.2323 },
+        { name: "Alatsee", location: "Ostallgäu", lat: 47.5622, lng: 10.6094 },
+        { name: "Baden-Baden", location: "Baden-Württemberg", lat: 48.7617, lng: 8.2413 },
+        { name: "Zeche Zollern", location: "Dortmund", lat: 51.5178, lng: 7.3333 },
+        { name: "Meißen", location: "Sachsen", lat: 51.1636, lng: 13.4774 },
+        { name: "Museum Ludwig", location: "Köln", lat: 50.9405, lng: 6.9606 },
+        { name: "Bernkastel-Kues", location: "Rheinland-Pfalz", lat: 49.9167, lng: 7.0667 },
+        { name: "Naturpark Barnim", location: "Brandenburg", lat: 52.7500, lng: 13.5000 },
+        { name: "Erfurt", location: "Thüringen", lat: 50.9848, lng: 11.0299 },
+        { name: "Ammergauer Alpen", location: "Nördlichen Kalkalpen", lat: 47.5667, lng: 10.9500 },
+        { name: "NP Jasmund", location: "Rügen", lat: 54.5500, lng: 13.6333 },
+        { name: "Böttcherstraße", location: "Bremen", lat: 53.0754, lng: 8.8058 },
+        { name: "Rakotzbrücke", location: "Gablenz", lat: 51.5363, lng: 14.6406 },
+        { name: "Ramsau bei Berchtesgaden", location: "Bayern", lat: 47.6067, lng: 12.8950 },
+
+        // --- Poster 2 (31-60) ---
+        { name: "Mainzer Dom", location: "Mainz", lat: 49.9989, lng: 8.2739 },
+        { name: "Schrecksee", location: "Allgäuer Alpen", lat: 47.4725, lng: 10.4686 },
+        { name: "Rothenburg ob der Tauber", location: "Bayern", lat: 49.3767, lng: 10.1772 },
+        { name: "Die Barbarine", location: "Sächsische Schweiz", lat: 50.9272, lng: 14.0578 },
+        { name: "Städel Museum", location: "Frankfurt", lat: 50.1064, lng: 8.6739 },
+        { name: "Lilienstein", location: "Sächsische Schweiz", lat: 50.9317, lng: 14.0847 },
+        { name: "Tübingen", location: "Baden-Württemberg", lat: 48.5216, lng: 9.0576 },
+        { name: "Schloss Heidelberg", location: "Heidelberg", lat: 49.4106, lng: 8.7153 },
+        { name: "Ostseebad Sellin", location: "Insel Rügen", lat: 54.3808, lng: 13.6933 },
+        { name: "Festung Königstein", location: "Königstein", lat: 50.9195, lng: 14.0567 },
+        { name: "Kunstkraftwerk", location: "Leipzig", lat: 51.3327, lng: 12.3242 },
+        { name: "Freudenberg", location: "Nordrhein-Westfalen", lat: 50.8972, lng: 7.8736 },
+        { name: "Berliner Mauer", location: "Berlin", lat: 52.5050, lng: 13.4397 },
+        { name: "Oberammergau", location: "Bayern", lat: 47.5956, lng: 11.0628 },
+        { name: "Eisenach", location: "Wartburg", lat: 50.9663, lng: 10.3064 },
+        { name: "Naturpark Arnsberger Wald", location: "Arnsberg", lat: 51.4500, lng: 8.2500 },
+        { name: "Helgoland", location: "Schleswig-Holstein", lat: 54.1803, lng: 7.8925 },
+        { name: "Brodtener Steilküste", location: "Lübeck", lat: 53.9833, lng: 10.8833 },
+        { name: "Eibsee", location: "Berchtesgadener Alpen", lat: 47.4569, lng: 10.9922 },
+        { name: "Miniatur Wunderland", location: "Hamburg", lat: 53.5439, lng: 9.9886 },
+        { name: "Partnachklamm", location: "Garmisch-Partenkirchen", lat: 47.4686, lng: 11.1194 },
+        { name: "Alexanderplatz", location: "Berlin", lat: 52.5219, lng: 13.4132 },
+        { name: "Wismar", location: "Mecklenburg-Vorpommern", lat: 53.8910, lng: 11.4594 },
+        { name: "Sanssouci", location: "Potsdam", lat: 52.4042, lng: 13.0385 },
+        { name: "Schloss Linderhof", location: "Ettal", lat: 47.5700, lng: 10.9608 },
+        { name: "Schloss Marienburg", location: "Pattensen", lat: 52.1728, lng: 9.7661 },
+        { name: "Mercedes-Benz Welt", location: "Stuttgart", lat: 48.7900, lng: 9.2300 },
+        { name: "Prinzipalmarkt", location: "Münster", lat: 51.9625, lng: 7.6256 },
+        { name: "Röthbachfall", location: "Berchtesgadener Alpen", lat: 47.5050, lng: 13.0133 },
+        { name: "Deutsches Eck", location: "Koblenz", lat: 50.3644, lng: 7.6059 },
+
+        // --- Poster 3 (61-100) ---
+        { name: "Porta Nigra", location: "Trier", lat: 49.7597, lng: 6.6440 },
+        { name: "Pirna", location: "Sachsen", lat: 50.9625, lng: 13.9419 },
+        { name: "Schloss Moritzburg", location: "Moritzburg", lat: 51.1836, lng: 13.6797 },
+        { name: "Schloss Neuschwanstein", location: "Schwangau", lat: 47.5576, lng: 10.7498 },
+        { name: "Insel Sylt", location: "Schleswig-Holstein", lat: 54.9133, lng: 8.3333 },
+        { name: "BMW Welt", location: "München", lat: 48.1768, lng: 11.5562 },
+        { name: "Schloss Schwerin", location: "Schwerin", lat: 53.6225, lng: 11.4189 },
+        { name: "Struffeltroute", location: "Roetgen", lat: 50.6483, lng: 6.2239 },
+        { name: "Freiburg im Breisgau", location: "Baden-Württemberg", lat: 47.9990, lng: 7.8421 },
+        { name: "Porsche-Museum", location: "Stuttgart", lat: 48.8353, lng: 9.1524 },
+        { name: "Insel Hiddensee", location: "West-Rügen", lat: 54.5369, lng: 13.1114 },
+        { name: "Blautopf", location: "Blaubeuren", lat: 48.4161, lng: 9.7844 },
+        { name: "Triberger Wasserfälle", location: "Mittlerer Schwarzwald", lat: 48.1286, lng: 8.2289 },
+        { name: "Dinkelsbühl", location: "Bayern", lat: 49.0692, lng: 10.3217 },
+        { name: "Insel Fehmarn", location: "Schleswig-Holstein", lat: 54.4361, lng: 11.1956 },
+        { name: "Loreley", location: "Bornich", lat: 50.1389, lng: 7.7286 },
+        { name: "Tangermünde", location: "Sachsen-Anhalt", lat: 52.5408, lng: 11.9703 },
+        { name: "Ladenburg", location: "Baden-Württemberg", lat: 49.4719, lng: 8.6097 },
+        { name: "Burg Eltz", location: "Wierschem", lat: 50.2053, lng: 7.3367 },
+        { name: "Markgräfliches Opernhaus", location: "Bayreuth", lat: 49.9444, lng: 11.5786 },
+        { name: "Forggensee", location: "Füssen", lat: 47.6075, lng: 10.7417 },
+        { name: "Externsteine", location: "Teutoburger Wald", lat: 51.8689, lng: 8.9175 },
+        { name: "Insel Juist", location: "Niedersachsen", lat: 53.6833, lng: 7.0000 },
+        { name: "Zentralgebäude", location: "Lüneburg", lat: 53.2464, lng: 10.4117 },
+        { name: "Quedlinburg", location: "Sachsen-Anhalt", lat: 51.7895, lng: 11.1492 },
+        { name: "Bauhaus Dessau", location: "Dessau-Rosslau", lat: 51.8386, lng: 12.2275 },
+        { name: "Zugspitze", location: "Bayerische Alpen", lat: 47.4210, lng: 10.9853 },
+        { name: "Insel Amrum", location: "Schleswig-Holstein", lat: 54.6500, lng: 8.3500 },
+        { name: "Mühlenmuseum", location: "Gifhorn", lat: 52.4894, lng: 10.5500 },
+        { name: "KZ Dachau", location: "Dachau", lat: 48.2703, lng: 11.4683 },
+        { name: "Botanischer Garten", location: "München", lat: 48.1633, lng: 11.5017 },
+        { name: "Naturpark Müritz", location: "Müritz", lat: 53.4000, lng: 12.8333 },
+        { name: "Kaiser Wilhelm Gedächtniskirche", location: "Berlin", lat: 52.5047, lng: 13.3350 },
+        { name: "Luisenpark", location: "Mannheim", lat: 49.4864, lng: 8.4947 },
+        { name: "Museum Vogtsbauernhof", location: "Gutach", lat: 48.2717, lng: 8.2000 },
+        { name: "Westmole", location: "Warnemünde", lat: 54.1833, lng: 12.0833 },
+        { name: "Wünsdorf", location: "Zossen", lat: 52.1706, lng: 13.4681 },
+        { name: "Fürstengarten Marienberg", location: "Würzburg", lat: 49.7917, lng: 9.9222 },
+        { name: "Zauberwald", location: "Hintersee", lat: 47.6083, lng: 12.8583 },
+        { name: "Wuppertal Schwebebahn", location: "Wuppertal", lat: 51.2561, lng: 7.1508 }
+    ];
+
+    function toggleView() {
+        const listView = document.getElementById('listView');
+        const mapView = document.getElementById('map-view');
+        const btn = document.getElementById('viewToggle');
+
+        if (listView.style.display !== 'none') {
+            // Switch to MAP
+            listView.style.display = 'none';
+            mapView.style.display = 'block';
+            btn.textContent = 'Switch to List View';
+            
+            // Initialize map if first time
+            if (!mapInitialized) {
+                initMap();
+                mapInitialized = true;
+            } else {
+                map.invalidateSize(); // Fixes grey tile issue if hidden initially
+            }
+        } else {
+            // Switch to LIST
+            listView.style.display = 'grid';
+            mapView.style.display = 'none';
+            btn.textContent = 'Switch to Map View';
+        }
+    }
+
+    function initMap() {
+        map = L.map('map-view').setView([51.1657, 10.4515], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        places.forEach(function(place) {
+            var googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.location)}`;
+
+            var popupContent = `
+                <span class="popup-title">${place.name}</span>
+                <span class="popup-location">${place.location}</span>
+                <a href="${googleMapsUrl}" target="_blank" class="popup-link">Open in Google Maps</a>
+            `;
+
+            L.marker([place.lat, place.lng])
+                .addTo(map)
+                .bindPopup(popupContent);
+        });
+    }
+</script>
 
 </body>
 </html>
