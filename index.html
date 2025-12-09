@@ -1,8 +1,8 @@
-
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Germany Travel Bucket List</title>
     
     <!-- Google Fonts -->
@@ -17,17 +17,14 @@
 
     <style>
         :root {
-            --bg-color: #1a2233; /* Deep, rich blue */
+            --bg-color: #1a2233;
             --bg-gradient: radial-gradient(circle at top center, #2c3e5e 0%, #1a2233 100%);
-            --card-color: #f7f3e8; /* Soft off-white/cream */
-            --card-hover: #ffffff;
-            --accent-gold: #cfaa68; /* Elegant gold */
+            --card-color: #f7f3e8;
+            --accent-gold: #cfaa68;
             --text-main: #2d3436;
             --text-sub: #636e72;
-            --visited-bg: #dfe6e9;
-            --visited-text: #b2bec3;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
-            --shadow-lg: 0 15px 30px rgba(0,0,0,0.25);
+            --visited-bg: #95a5a6;
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.25);
         }
 
         body {
@@ -37,227 +34,52 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            max-width: 1400px;
-            width: 100%;
-            padding: 20px;
+            height: 100vh; /* Full viewport height */
             display: flex;
             flex-direction: column;
-            align-items: center;
+            overflow: hidden; /* Prevent scrolling on body */
         }
 
-        /* Updated Floating Header */
+        /* Compact Header for Map View */
         header {
             text-align: center;
-            color: var(--card-color); /* Beige instead of white */
-            margin-bottom: 40px;
-            width: 95%;
-            max-width: 800px; /* Keep it compact */
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            padding: 15px 30px;
-            background: rgba(26, 34, 51, 0.9); /* Slightly more opaque for readability */
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50px; /* Fully rounded pill shape */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: var(--card-color);
+            padding: 10px 20px;
+            background: rgba(26, 34, 51, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            flex-shrink: 0; /* Prevent header from shrinking */
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin: 0 0 12px 0;
+            font-size: 1.2rem;
+            margin: 0;
             letter-spacing: 1px;
             color: var(--accent-gold);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* --- Toggle Switch Styles --- */
-        .switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .switch-label {
-            font-weight: 600;
-            color: var(--card-color); /* Matches theme better */
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: color 0.3s;
-            opacity: 0.8;
-        }
-        
-        .switch-label:hover { opacity: 1; color: var(--accent-gold); }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;
-            height: 28px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(247, 243, 232, 0.2);
-            transition: .4s;
-            border-radius: 34px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: var(--accent-gold);
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        input:checked + .slider { background-color: rgba(247, 243, 232, 0.3); }
-        input:checked + .slider:before { transform: translateX(24px); background-color: var(--card-color); }
-
-        /* --- Grid View Styles --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            width: 100%;
-            padding-bottom: 40px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card {
-            background-color: var(--card-color);
-            border-radius: 16px;
-            text-decoration: none;
-            aspect-ratio: 3/4;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px 15px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            user-select: none;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            background-color: var(--card-hover);
-            box-shadow: var(--shadow-lg);
-            z-index: 10;
-        }
-
-        /* Checkbox Styling */
-        .checkbox-container {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            z-index: 5;
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Custom Checkbox Appearance */
-        .visit-checkbox {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.05);
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: grid;
-            place-content: center;
-        }
-
-        .visit-checkbox::before {
-            content: "✓";
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.2s;
-        }
-
-        .visit-checkbox:hover { border-color: var(--accent-gold); }
-
-        .visit-checkbox:checked {
-            background-color: var(--accent-gold);
-            border-color: var(--accent-gold);
-        }
-        
-        .visit-checkbox:checked::before { opacity: 1; transform: scale(1); }
-
-        /* Visited State */
-        .card.visited {
-            background-color: var(--visited-bg);
-            box-shadow: none;
-            opacity: 0.8;
-            transform: scale(0.98);
-        }
-        
-        .card.visited .place-name { color: var(--visited-text); text-decoration: line-through; }
-        .card.visited .location-name { color: var(--visited-text); }
-        .card.visited:hover { transform: scale(1); opacity: 1; }
-
-        .place-name {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .location-name {
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            color: var(--text-sub);
-            letter-spacing: 0.5px;
-        }
-
-        /* --- Map View Styles --- */
-        #map-view {
-            display: none;
-            height: 75vh;
-            width: 100%;
-            border-radius: 20px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            white-space: nowrap;
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            border: 4px solid rgba(255,255,255,0.1);
+            text-overflow: ellipsis;
+        }
+
+        /* Full Screen Map Container */
+        #map-container {
+            flex-grow: 1; /* Fills remaining height */
+            position: relative;
+            width: 100%;
+            z-index: 1;
+        }
+
+        #map-view {
+            height: 100%;
+            width: 100%;
+            background-color: #aad3df;
         }
 
         /* Leaflet Customization */
@@ -266,8 +88,16 @@
             border-radius: 12px;
             box-shadow: var(--shadow-lg);
             font-family: 'Inter', sans-serif;
+            padding: 0;
+            overflow: hidden;
+        }
+        .leaflet-popup-content {
+            margin: 15px 20px;
+            text-align: center;
+            min-width: 200px;
         }
         .leaflet-popup-tip { background-color: var(--card-color); }
+        
         .popup-title { 
             font-family: 'Playfair Display', serif; 
             font-weight: 700; 
@@ -276,73 +106,91 @@
             margin-bottom: 4px; 
             color: var(--text-main);
         }
-        .popup-link { 
-            display: inline-block; 
+        
+        .popup-location {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .popup-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .popup-btn { 
+            display: block;
+            text-decoration: none; 
+            padding: 10px 0; 
+            font-size: 0.8rem; 
+            font-weight: 600;
+            border-radius: 8px; 
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-maps {
             background-color: var(--accent-gold); 
             color: #fff; 
-            text-decoration: none; 
-            padding: 8px 16px; 
-            font-size: 0.75rem; 
-            font-weight: 600;
-            border-radius: 20px; 
-            margin-top: 10px;
-            transition: background 0.2s;
         }
-        .popup-link:hover { background-color: #b38f50; }
+        .btn-maps:hover { background-color: #b38f50; }
+
+        .btn-toggle-visit {
+            background-color: rgba(0,0,0,0.05);
+            color: var(--text-sub);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .btn-toggle-visit.is-visited {
+            background-color: var(--text-main);
+            color: #fff;
+        }
 
         /* Custom Map Marker CSS */
         .custom-marker-pin {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--accent-gold);
-            border: 2px solid #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: all 0.3s;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .custom-marker-pin.visited {
-            background: #95a5a6;
-            width: 12px;
-            height: 12px;
-            opacity: 0.7;
+            background: var(--visited-bg);
+            border-color: #ecf0f1;
+            transform: scale(0.8);
+            opacity: 0.8;
         }
         
-        .custom-marker-pin:hover {
+        .leaflet-marker-icon:hover .custom-marker-pin {
             transform: scale(1.3);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
             z-index: 1000;
         }
 
         @media (max-width: 600px) {
-            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            h1 { font-size: 1.5rem; }
-            header { padding: 10px 20px; width: 90%; }
-            .card { padding: 15px 10px; }
+            h1 { font-size: 1rem; }
+            header { padding: 12px; }
+            .leaflet-popup-content { min-width: 180px; margin: 12px 15px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Bucket List Deutschland</h1>
-        
-        <!-- Toggle Switch UI -->
-        <div class="switch-container">
-            <span class="switch-label" onclick="setMode('list')">List</span>
-            <label class="switch">
-                <input type="checkbox" id="viewToggle" onchange="toggleView()">
-                <span class="slider"></span>
-            </label>
-            <span class="switch-label" onclick="setMode('map')">Map</span>
-        </div>
-    </header>
+<header>
+    <h1>Bucket List Deutschland</h1>
+</header>
 
-    <!-- LIST VIEW - Content Generated by JS -->
-    <div id="listView" class="grid-container"></div>
-
-    <!-- MAP VIEW CONTAINER -->
+<!-- MAP VIEW CONTAINER -->
+<div id="map-container">
     <div id="map-view"></div>
 </div>
 
@@ -352,9 +200,8 @@
      crossorigin=""></script>
 
 <script>
-    let mapInitialized = false;
     let map;
-    let markers = []; // Store markers to update them later
+    let markers = []; 
     
     // Load visited state from localStorage
     let visitedPlaces = JSON.parse(localStorage.getItem('germany_bucket_list_visited')) || {};
@@ -466,121 +313,9 @@
         { name: "Zauberwald", location: "Hintersee", lat: 47.6083, lng: 12.8583 },
         { name: "Wuppertal Schwebebahn", location: "Wuppertal", lat: 51.2561, lng: 7.1508 }
     ];
-    
-    // Function to render the list dynamically
-    function renderList() {
-        const listContainer = document.getElementById('listView');
-        listContainer.innerHTML = ''; // Clear existing content
-        
-        places.forEach((place, index) => {
-            const isVisited = visitedPlaces[place.name];
-            
-            const card = document.createElement('div');
-            card.className = 'card ' + (isVisited ? 'visited' : '');
-            // We use onclick here to navigate only if checkbox wasn't clicked
-            card.onclick = (e) => openPlaceLink(e, place);
-            
-            const checkboxContainer = document.createElement('div');
-            checkboxContainer.className = 'checkbox-container';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'visit-checkbox';
-            checkbox.checked = !!isVisited;
-            checkbox.onclick = (e) => toggleVisited(e, place.name, index);
-            
-            checkboxContainer.appendChild(checkbox);
-            
-            const nameDiv = document.createElement('div');
-            nameDiv.className = 'place-name';
-            nameDiv.innerText = place.name;
-            
-            const locDiv = document.createElement('div');
-            locDiv.className = 'location-name';
-            locDiv.innerText = place.location;
-            
-            card.appendChild(checkboxContainer);
-            card.appendChild(nameDiv);
-            card.appendChild(locDiv);
-            
-            listContainer.appendChild(card);
-        });
-    }
-    
-    function openPlaceLink(e, place) {
-        // Only open link if we didn't click the checkbox
-        if (!e.target.classList.contains('visit-checkbox')) {
-             const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.location)}`;
-             window.open(url, '_blank');
-        }
-    }
-    
-    function toggleVisited(e, placeName, index) {
-        e.stopPropagation(); // Stop the card click event
-        
-        // Toggle state
-        if (visitedPlaces[placeName]) {
-            delete visitedPlaces[placeName];
-        } else {
-            visitedPlaces[placeName] = true;
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('germany_bucket_list_visited', JSON.stringify(visitedPlaces));
-        
-        // Re-render list to show changes (or simple class toggle for performance)
-        renderList();
-        
-        // If map is initialized, update marker styles
-        if (mapInitialized && markers[index]) {
-             updateMarkerStyle(markers[index], !!visitedPlaces[placeName]);
-        }
-    }
-    
-    function updateMarkerStyle(marker, isVisited) {
-        const el = marker.getElement();
-        if (el) {
-            el.innerHTML = `<div class="custom-marker-pin ${isVisited ? 'visited' : ''}"></div>`;
-        }
-    }
-
-    function setMode(mode) {
-        const checkbox = document.getElementById('viewToggle');
-        if (mode === 'map' && !checkbox.checked) {
-            checkbox.checked = true;
-            toggleView();
-        } else if (mode === 'list' && checkbox.checked) {
-            checkbox.checked = false;
-            toggleView();
-        }
-    }
-
-    function toggleView() {
-        const listView = document.getElementById('listView');
-        const mapView = document.getElementById('map-view');
-        const checkbox = document.getElementById('viewToggle');
-
-        if (checkbox.checked) {
-            // Switch to MAP
-            listView.style.display = 'none';
-            mapView.style.display = 'block';
-            
-            // Initialize map if first time
-            if (!mapInitialized) {
-                initMap();
-                mapInitialized = true;
-            } else {
-                map.invalidateSize(); 
-                refreshMapMarkers();
-            }
-        } else {
-            // Switch to LIST
-            listView.style.display = 'grid';
-            mapView.style.display = 'none';
-        }
-    }
 
     function initMap() {
+        // Center of Germany
         map = L.map('map-view').setView([51.1657, 10.4515], 6);
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -589,23 +324,48 @@
         }).addTo(map);
 
         createMarkers();
+        
+        // Handle window resize to invalidate map size
+        window.addEventListener('resize', () => {
+             map.invalidateSize();
+        });
     }
     
     function createMarkers() {
         places.forEach(function(place, index) {
-            var googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.location)}`;
-
-            var popupContent = `
+            
+            // Create a closure-safe toggle function string or handle via event delegation
+            // Easier: bindPopup accepts HTML string or DOM element. We use DOM element for listeners.
+            const container = document.createElement('div');
+            
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.location)}`;
+            const isVisited = visitedPlaces[place.name];
+            
+            container.innerHTML = `
                 <span class="popup-title">${place.name}</span>
                 <span class="popup-location">${place.location}</span>
-                <a href="${googleMapsUrl}" target="_blank" class="popup-link">Open in Google Maps</a>
+                <div class="popup-actions">
+                    <button class="popup-btn btn-toggle-visit ${isVisited ? 'is-visited' : ''}" id="btn-visit-${index}">
+                        ${isVisited ? 'Visited ✓' : 'Mark as Visited'}
+                    </button>
+                    <a href="${googleMapsUrl}" target="_blank" class="popup-btn btn-maps">
+                        Open in Google Maps
+                    </a>
+                </div>
             `;
             
-            // Use divIcon for custom markers styling
-            const isVisited = visitedPlaces[place.name];
+            // Add event listener to the button *after* it's added to DOM? 
+            // Leaflet popups are tricky with event listeners if string is passed.
+            // Using DOM node for content:
+            
+            const btnVisit = container.querySelector(`#btn-visit-${index}`);
+            btnVisit.onclick = (e) => {
+                toggleVisited(place.name, index, btnVisit);
+            };
+
             const myIcon = L.divIcon({
                 className: 'custom-marker',
-                html: `<div class="custom-marker-pin ${isVisited ? 'visited' : ''}"></div>`,
+                html: `<div class="custom-marker-pin ${isVisited ? 'visited' : ''}" id="pin-${index}"></div>`,
                 iconSize: [20, 20],
                 iconAnchor: [10, 10],
                 popupAnchor: [0, -10]
@@ -613,23 +373,40 @@
 
             var marker = L.marker([place.lat, place.lng], { icon: myIcon })
                 .addTo(map)
-                .bindPopup(popupContent);
+                .bindPopup(container);
                 
-            markers[index] = marker; // Store reference
+            markers[index] = marker; 
         });
     }
     
-    function refreshMapMarkers() {
-         places.forEach((place, index) => {
-             if (markers[index]) {
-                 updateMarkerStyle(markers[index], !!visitedPlaces[place.name]);
-             }
-         });
+    function toggleVisited(placeName, index, btnElement) {
+        if (visitedPlaces[placeName]) {
+            delete visitedPlaces[placeName];
+            btnElement.textContent = "Mark as Visited";
+            btnElement.classList.remove('is-visited');
+            updateMarkerVisual(index, false);
+        } else {
+            visitedPlaces[placeName] = true;
+            btnElement.textContent = "Visited ✓";
+            btnElement.classList.add('is-visited');
+            updateMarkerVisual(index, true);
+        }
+        localStorage.setItem('germany_bucket_list_visited', JSON.stringify(visitedPlaces));
+    }
+    
+    function updateMarkerVisual(index, isVisited) {
+        const pin = document.getElementById(`pin-${index}`);
+        if (pin) {
+            if (isVisited) {
+                pin.classList.add('visited');
+            } else {
+                pin.classList.remove('visited');
+            }
+        }
     }
 
-    // Initialize list on load
-    renderList();
+    // Start map
+    initMap();
 </script>
 
 </body>
-</html>
