@@ -44,7 +44,7 @@
         header {
             text-align: center;
             color: var(--card-color);
-            padding: 10px 20px;
+            padding: 15px 20px;
             background: rgba(26, 34, 51, 0.95);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -52,8 +52,10 @@
             z-index: 1000;
             flex-shrink: 0; /* Prevent header from shrinking */
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 12px;
         }
 
         h1 {
@@ -66,6 +68,80 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        /* --- Search Bar Styles --- */
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: var(--card-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+
+        #search-input::placeholder {
+            color: rgba(247, 243, 232, 0.5);
+        }
+
+        #search-input:focus {
+            background: rgba(26, 34, 51, 1);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(207, 170, 104, 0.3);
+        }
+
+        #search-results {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            right: 0;
+            background: var(--card-color);
+            border-radius: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: #e8e4d9;
+        }
+
+        .search-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .search-loc {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
         }
 
         /* Full Screen Map Container */
@@ -186,7 +262,11 @@
 <body>
 
 <header>
-    <h1>100 Orte in Deutschland</h1>
+    <h1>Bucket List Deutschland</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search for a place..." oninput="performSearch(this.value)">
+        <div id="search-results"></div>
+    </div>
 </header>
 
 <!-- MAP VIEW CONTAINER -->
@@ -404,6 +484,71 @@
             }
         }
     }
+
+    // --- Search Logic ---
+    function performSearch(query) {
+        const resultsContainer = document.getElementById('search-results');
+        
+        if (!query || query.length < 2) {
+            resultsContainer.style.display = 'none';
+            return;
+        }
+        
+        const lowerQuery = query.toLowerCase();
+        // Keep track of original index to know which marker to open
+        const filteredPlaces = places.map((place, index) => ({...place, originalIndex: index}))
+                                     .filter(place => 
+                                        place.name.toLowerCase().includes(lowerQuery) || 
+                                        place.location.toLowerCase().includes(lowerQuery)
+                                     );
+        
+        resultsContainer.innerHTML = '';
+        
+        if (filteredPlaces.length > 0) {
+            resultsContainer.style.display = 'block';
+            filteredPlaces.forEach(place => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.innerHTML = `
+                    <span class="search-name">${place.name}</span>
+                    <span class="search-loc">${place.location}</span>
+                `;
+                item.onclick = () => selectPlace(place.originalIndex);
+                resultsContainer.appendChild(item);
+            });
+        } else {
+            resultsContainer.style.display = 'none';
+        }
+    }
+
+    function selectPlace(index) {
+        const place = places[index];
+        const marker = markers[index];
+        
+        // Zoom and pan
+        map.flyTo([place.lat, place.lng], 10, {
+            duration: 1.5
+        });
+        
+        // Open popup after animation (approx) or immediately
+        // Leaflet flyTo is async, but openPopup works fine usually immediately or we can set timeout
+        setTimeout(() => {
+            marker.openPopup();
+        }, 500);
+        
+        // Clear search
+        document.getElementById('search-input').value = '';
+        document.getElementById('search-results').style.display = 'none';
+    }
+
+    // Close search on click outside
+    document.addEventListener('click', function(event) {
+        const container = document.querySelector('.search-container');
+        if (container && !container.contains(event.target)) {
+            const results = document.getElementById('search-results');
+            if(results) results.style.display = 'none';
+        }
+    });
 
     // Start map
     initMap();
